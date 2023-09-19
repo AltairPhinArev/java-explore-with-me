@@ -38,42 +38,43 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public Collection<ViewStatsDto> get(String start, String end, List<String> uris, Boolean unique) {
-
         LocalDateTime startTime = LocalDateTime.parse(start, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
         LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
 
         List<ViewStatsDto> list = new ArrayList<>();
 
         if (unique) {
-            return statsRepository.findUniqueViewStats(startTime, endTime, uris).stream()
+            log.info("Unique GET request of stats with Parameters start-{}, end-{}, uris-{}", start, end, uris);
+            return statsRepository.findUniqueViewStats(startTime, endTime, uris)
+                    .stream()
                     .map(StatsMapper::toDto)
+                    .sorted(Comparator.comparingLong(ViewStatsDto::getHits))
                     .collect(Collectors.toList());
+        }
 
-        } else {
-            if (uris == null) {
-                uris = statsRepository.findAllByTime(startTime, endTime).stream()
-                        .distinct()
-                        .collect(Collectors.toList());
-            }
-            List<EndpointHit> hits;
-            for (String uri : uris) {
-                if (uri.contains("[")) {
-                    hits = statsRepository.findAllByUri(uri.substring(1, uri.length() - 1), startTime, endTime);
-                } else {
-                    hits = statsRepository.findAllByUri(uri, startTime, endTime);
-                }
-                if (!hits.isEmpty()) {
-                    list.add(StatsMapper.toDto(HitMapper.toViewStats(hits)));
-                }
+        if (uris == null) {
+            log.info("GET stats request without List of Uris");
+            uris = statsRepository.findAllByTimestampBetween(startTime, endTime)
+                    .stream()
+                    .map(EndpointHit::getUri)
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+
+        for (String uri : uris) {
+            List<EndpointHit> hits = statsRepository.findAllByUriAndTimestampBetween(uri, startTime, endTime);
+            if (!hits.isEmpty()) {
+                list.add(StatsMapper.toDto(HitMapper.toViewStats(hits)));
             }
         }
         list.sort(Comparator.comparingLong(ViewStatsDto::getHits).reversed());
         return list;
     }
-
     @Override
     @Transactional
-    public EndpointHitDto create(EndpointHitDto dto) {
-        return HitMapper.toDto(statsRepository.save(HitMapper.toEntity(dto)));
+    public EndpointHitDto create(EndpointHitDto endpointHitDto) {
+        log.info("EndpointHitDto was created by parameters {} | {} | {}", endpointHitDto.getApp()
+                ,endpointHitDto.getUri(),endpointHitDto.getIp());
+        return HitMapper.toDto(statsRepository.save(HitMapper.toEntity(endpointHitDto)));
     }
 }

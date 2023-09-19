@@ -30,14 +30,13 @@ public class StatsController {
                                         @RequestParam String end,
                                         @RequestParam(required = false) List<String> uris,
                                         @RequestParam(defaultValue = "false") Boolean unique) {
-        log.info("Получен запрос GET /stats");
-        log.info("{}", unique);
+        log.info("GET REQUEST BY -> /stats");
         return new ResponseEntity<>(service.get(start, end, uris, unique), HttpStatus.OK);
     }
 
     @PostMapping("/hit")
     public ResponseEntity<EndpointHitDto> create(@RequestBody EndpointHitDto dto) {
-        log.info("Получен запрос POST /hit");
+        log.info("POST REQUEST BY -> /hit");
         return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
     }
 }
