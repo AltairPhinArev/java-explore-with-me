@@ -15,10 +15,7 @@ import ru.practicum.ewmstatsservice.repository.StatsRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static contstants.ConstantUtil.DATE_TIME_FORMAT;
@@ -64,7 +61,7 @@ public class StatsServiceImpl implements StatsService {
         for (String uri : uris) {
             List<EndpointHit> hits = statsRepository.findAllByUriAndTimestampBetween(uri, startTime, endTime);
             if (!hits.isEmpty()) {
-                list.add(StatsMapper.toDto(HitMapper.toViewStats(hits)));
+                list.add(StatsMapper.toDto(Objects.requireNonNull(HitMapper.toViewStats(hits))));
             }
         }
         list.sort(Comparator.comparingLong(ViewStatsDto::getHits).reversed());
