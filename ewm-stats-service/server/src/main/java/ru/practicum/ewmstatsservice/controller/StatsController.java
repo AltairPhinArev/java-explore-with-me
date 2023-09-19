@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import dto.EndpointHitDto;
 
-import ru.practicum.ewmstatsservice.model.ViewStats;
 import ru.practicum.ewmstatsservice.service.StatsService;
 
 import java.util.Collection;
