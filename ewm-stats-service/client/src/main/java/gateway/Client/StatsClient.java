@@ -18,7 +18,6 @@ import static contstants.ConstantUtil.STAT_SERVICE_URL;
 @Service
 public class StatsClient extends BaseClient {
 
-
     @Autowired
     public StatsClient(@Value(STAT_SERVICE_URL) String serverUrl, RestTemplateBuilder builder) {
         super(builder.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))

@@ -67,11 +67,12 @@ public class StatsServiceImpl implements StatsService {
         list.sort(Comparator.comparingLong(ViewStatsDto::getHits).reversed());
         return list;
     }
+
     @Override
     @Transactional
     public EndpointHitDto create(EndpointHitDto endpointHitDto) {
-        log.info("EndpointHitDto was created by parameters {} | {} | {}", endpointHitDto.getApp()
-                ,endpointHitDto.getUri(),endpointHitDto.getIp());
+        log.info("EndpointHitDto was created by parameters {} | {} | {}", endpointHitDto.getApp(),
+                endpointHitDto.getUri(), endpointHitDto.getIp());
         return HitMapper.toDto(statsRepository.save(HitMapper.toEntity(endpointHitDto)));
     }
 }

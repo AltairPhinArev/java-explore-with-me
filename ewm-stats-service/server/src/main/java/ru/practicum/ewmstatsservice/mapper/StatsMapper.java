@@ -5,9 +5,6 @@ import dto.ViewStatsDto;
 
 import ru.practicum.ewmstatsservice.model.ViewStats;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Component
 public class StatsMapper {
 
@@ -25,9 +22,5 @@ public class StatsMapper {
                 .uri(stats.getUri())
                 .hits(stats.getHits())
                 .build();
-    }
-
-    public static List<ViewStatsDto> toList(List<ViewStats> viewStats) {
-        return viewStats.stream().map(StatsMapper::toDto).collect(Collectors.toList());
     }
 }
