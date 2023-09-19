@@ -24,6 +24,7 @@ public class StatsController {
     public StatsController(StatsService service) {
         this.service = service;
     }
+
     @GetMapping("/stats")
     public ResponseEntity<Collection<ViewStatsDto>> get(@RequestParam String start,
                                         @RequestParam String end,
@@ -33,7 +34,6 @@ public class StatsController {
         log.info("{}", unique);
         return new ResponseEntity<>(service.get(start, end, uris, unique), HttpStatus.OK);
     }
-
 
     @PostMapping("/hit")
     public ResponseEntity<EndpointHitDto> create(@RequestBody EndpointHitDto dto) {

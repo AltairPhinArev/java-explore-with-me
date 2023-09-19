@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import ru.practicum.ewmstatsservice.mapper.StatsMapper;
 import ru.practicum.ewmstatsservice.model.EndpointHit;
-import ru.practicum.ewmstatsservice.model.ViewStats;
 import ru.practicum.ewmstatsservice.mapper.HitMapper;
 
 import dto.EndpointHitDto;

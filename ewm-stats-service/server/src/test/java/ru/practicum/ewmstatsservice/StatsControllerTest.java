@@ -13,7 +13,6 @@ import ru.practicum.ewmstatsservice.controller.StatsController;
 import ru.practicum.ewmstatsservice.service.StatsService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
