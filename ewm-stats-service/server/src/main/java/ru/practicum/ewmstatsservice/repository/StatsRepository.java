@@ -25,4 +25,4 @@ public interface StatsRepository extends JpaRepository<EndpointHit, Long> {
             "ORDER BY COUNT(DISTINCT eh.ip) DESC ")
     List<ViewStats> findUniqueViewStats(LocalDateTime start, LocalDateTime end, List<String> uris);
 }
-}
+
