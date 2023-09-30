@@ -2,7 +2,7 @@ package ru.practicum.ewmmainservice.model;
 
 import lombok.*;
 import org.hibernate.annotations.WhereJoinTable;
-import ru.practicum.ewmmainservice.dto.State;
+import ru.practicum.ewmmainservice.dto.enums.State;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

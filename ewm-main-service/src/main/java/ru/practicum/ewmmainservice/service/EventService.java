@@ -1,9 +1,9 @@
 package ru.practicum.ewmmainservice.service;
 
 
-import ru.practicum.ewmmainservice.dto.SortByState;
+import ru.practicum.ewmmainservice.dto.enums.SortByState;
 
-import ru.practicum.ewmmainservice.dto.State;
+import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.dto.event.*;
 
 import javax.servlet.http.HttpServletRequest;

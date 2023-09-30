@@ -1,21 +1,21 @@
 package ru.practicum.ewmmainservice.service.impl;
 
 import dto.EndpointHitDto;
-import dto.ViewStatsDto;
 import gateway.Client.StatsClient;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewmmainservice.dto.*;
 
+import ru.practicum.ewmmainservice.dto.enums.AdminStateAction;
+import ru.practicum.ewmmainservice.dto.enums.SortByState;
+import ru.practicum.ewmmainservice.dto.enums.State;
+import ru.practicum.ewmmainservice.dto.enums.UserStateAction;
 import ru.practicum.ewmmainservice.dto.event.*;
 import ru.practicum.ewmmainservice.dto.request.ParticipationRequestDto;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.ConflictException;
@@ -42,8 +42,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ru.practicum.ewmmainservice.dto.Status.CONFIRMED;
-import static ru.practicum.ewmmainservice.dto.Status.REJECTED;
+import static ru.practicum.ewmmainservice.dto.enums.Status.CONFIRMED;
+import static ru.practicum.ewmmainservice.dto.enums.Status.REJECTED;
 
 
 @Service

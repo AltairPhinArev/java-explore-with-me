@@ -7,8 +7,8 @@ import ru.practicum.ewmmainservice.model.User;
 
 import java.time.LocalDateTime;
 
-import static ru.practicum.ewmmainservice.dto.Status.CONFIRMED;
-import static ru.practicum.ewmmainservice.dto.Status.PENDING;
+import static ru.practicum.ewmmainservice.dto.enums.Status.CONFIRMED;
+import static ru.practicum.ewmmainservice.dto.enums.Status.PENDING;
 
 public class RequestMapper {
 

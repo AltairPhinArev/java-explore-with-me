@@ -1,7 +1,7 @@
 package ru.practicum.ewmmainservice.dto.event;
 
 import lombok.*;
-import ru.practicum.ewmmainservice.dto.State;
+import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.model.Location;
 import ru.practicum.ewmmainservice.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.dto.user.UserDto;

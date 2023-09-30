@@ -2,7 +2,7 @@ package ru.practicum.ewmmainservice.repository;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
-import ru.practicum.ewmmainservice.dto.State;
+import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.model.Category;
 import ru.practicum.ewmmainservice.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -3,7 +3,7 @@ package ru.practicum.ewmmainservice.controller.admin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewmmainservice.dto.State;
+import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.dto.event.*;
 
 import ru.practicum.ewmmainservice.service.EventService;

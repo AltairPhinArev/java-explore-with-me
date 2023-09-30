@@ -1,7 +1,7 @@
 package ru.practicum.ewmmainservice.model;
 
 import lombok.*;
-import ru.practicum.ewmmainservice.dto.Status;
+import ru.practicum.ewmmainservice.dto.enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

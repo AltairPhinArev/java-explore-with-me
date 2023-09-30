@@ -3,7 +3,7 @@ package ru.practicum.ewmmainservice.controller.pub;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewmmainservice.dto.SortByState;
+import ru.practicum.ewmmainservice.dto.enums.SortByState;
 import ru.practicum.ewmmainservice.dto.event.EventFullDto;
 import ru.practicum.ewmmainservice.dto.event.EventShortDto;
 import ru.practicum.ewmmainservice.service.EventService;

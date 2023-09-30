@@ -1,4 +1,4 @@
-package ru.practicum.ewmmainservice.dto;
+package ru.practicum.ewmmainservice.dto.enums;
 
 public enum AdminStateAction {
     PUBLISH_EVENT,

@@ -1,6 +1,6 @@
 package ru.practicum.ewmmainservice.mapper;
 
-import ru.practicum.ewmmainservice.dto.State;
+import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.dto.event.*;
 import ru.practicum.ewmmainservice.model.Location;
 import ru.practicum.ewmmainservice.model.Event;

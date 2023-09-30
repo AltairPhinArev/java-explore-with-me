@@ -61,6 +61,7 @@ public class CompilationServiceImpl implements CompilationService {
         log.info("Compilation was successfully created");
         return CompilationMapper.toCompilationDto(compilation);
     }
+
     @Override
     public CompilationDto updateCompilation(UpdateCompilationRequest updateCompilationRequest, Long compId) {
         log.info("PATCH/Admin");
@@ -107,7 +108,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
-        PageRequest pageable =PageRequest.of(from, size,
+        PageRequest pageable = PageRequest.of(from, size,
                 Sort.by(Sort.Direction.ASC, "id"));
         List<Compilation> compilations;
 
