@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ru.practicum.ewmstatsservice.exception.ValidationException;
 import ru.practicum.ewmstatsservice.mapper.StatsMapper;
 import ru.practicum.ewmstatsservice.model.EndpointHit;
 import ru.practicum.ewmstatsservice.mapper.HitMapper;
@@ -37,6 +38,10 @@ public class StatsServiceImpl implements StatsService {
     public Collection<ViewStatsDto> get(String start, String end, List<String> uris, Boolean unique) {
         LocalDateTime startTime = LocalDateTime.parse(start, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
         LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
+
+        if (endTime.isBefore(startTime)) {
+            throw new ValidationException("EndTime must be later of start");
+        }
 
         List<ViewStatsDto> list = new ArrayList<>();
 
