@@ -33,7 +33,8 @@ public class PublicEventController {
                                             @RequestParam(defaultValue = "EVENT_DATE") SortByState sortByState,
                                             @RequestParam(defaultValue = "0") Integer from,
                                             @RequestParam(defaultValue = "10") Integer size,
-                                            HttpServletRequest request) {        
+                                            HttpServletRequest request) {
+
         log.info("PUBLIC GET request to get all events by params");
         return eventService.getAllPublic(text, categories, paid, rangeStart,
                 rangeEnd, onlyAvailable, sortByState, from, size, request);

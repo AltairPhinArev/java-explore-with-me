@@ -183,7 +183,7 @@ public class EventServiceImpl implements EventService {
         }
 
         return eventRepository.findEventsByParams(users, states, categories, startDate,
-                        endDate, PageRequest.of(from , size)).stream()
+                        endDate, PageRequest.of(from, size)).stream()
                 .map(EventMapper::toEventFullDto)
                 .collect(Collectors.toList());
     }
@@ -253,7 +253,7 @@ public class EventServiceImpl implements EventService {
         uniqView.add(request.getRemoteAddr());
 
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id ="+ eventId+ "not found"));
+                .orElseThrow(() -> new NotFoundException("Event with id =" + eventId + "not found"));
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new NotFoundException("Event with id=" + eventId + " is not published");
         }
