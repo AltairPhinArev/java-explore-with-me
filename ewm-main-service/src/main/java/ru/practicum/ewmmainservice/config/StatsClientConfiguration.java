@@ -7,14 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
-import static contstants.ConstantUtil.STAT_SERVICE_URL;
-
 @Configuration
 public class StatsClientConfiguration {
+
+    @Value("${stats-service.url}")
+    private String url;
 
     @Bean
     StatsClient statsClient() {
         RestTemplateBuilder builder = new RestTemplateBuilder();
-        return new StatsClient("http://localhost:9090", builder);
+        return new StatsClient(url, builder);
     }
 }
