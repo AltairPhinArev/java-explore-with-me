@@ -354,10 +354,13 @@ public class EventServiceImpl implements EventService {
 
         if (!eventRequestStatusUpdateResult.getRejectedRequests().isEmpty())  {
             event.setRequest(event.getRequest() - (long) eventRequestStatusUpdateResult.getRejectedRequests().size());
+            if (event.getRequest() < 0) {
+                event.setRequest(0L);
+            }
         }
 
         eventRepository.save(event);
-        log.info("Participations patched");
+        log.info("Event was updated by ID -> {}", event.getId());
         return eventRequestStatusUpdateResult;
     }
 
