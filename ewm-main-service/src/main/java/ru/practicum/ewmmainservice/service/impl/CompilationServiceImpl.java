@@ -108,14 +108,14 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
-        PageRequest pageable = PageRequest.of(from, size,
+        PageRequest pageRequest = PageRequest.of(from, size,
                 Sort.by(Sort.Direction.ASC, "id"));
         List<Compilation> compilations;
 
         if (pinned != null) {
-            compilations = compilationRepository.findAllByPinned(pinned, pageable);
+            compilations = compilationRepository.findAllByPinned(pinned, pageRequest);
         } else {
-            compilations = compilationRepository.findAll(pageable).toList();
+            compilations = compilationRepository.findAll(pageRequest).toList();
         }
 
         log.info("Get list of compilations by size - {}", compilations.size());

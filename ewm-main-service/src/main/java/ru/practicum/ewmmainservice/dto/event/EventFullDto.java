@@ -8,6 +8,7 @@ import ru.practicum.ewmmainservice.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.dto.user.UserShortDto;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder

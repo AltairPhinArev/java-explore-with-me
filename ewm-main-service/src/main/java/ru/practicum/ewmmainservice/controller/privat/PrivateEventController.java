@@ -57,7 +57,7 @@ public class PrivateEventController {
     public EventFullDto update(@PathVariable Long userId, @PathVariable Long eventId,
                                @RequestBody @Valid UpdateEventUserRequest eventDto) {
         log.info("Private PATCH request from User = {} to update event by ID= {}", userId, eventId);
-        return eventService.UserUpdateEvent(userId, eventId, eventDto);
+        return eventService.userUpdateEvent(userId, eventId, eventDto);
     }
 
     @PatchMapping("/events/{eventId}/requests")

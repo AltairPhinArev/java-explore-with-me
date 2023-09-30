@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsById(userId)) {
             return true;
         } else {
-            throw new NotFoundException("User with id="+ userId + " was not found");
+            throw new NotFoundException("User with id=" + userId + " was not found");
         }
     }
 }

@@ -182,8 +182,8 @@ public class EventServiceImpl implements EventService {
             throw new ValidationException("End of range can't be before start");
         }
 
-        return eventRepository.findEventsByParams(users, states, categories,
-                        startDate, endDate, PageRequest.of(from , size)).stream()
+        return eventRepository.findEventsByParams(users, states, categories, startDate,
+                        endDate, PageRequest.of(from , size)).stream()
                 .map(EventMapper::toEventFullDto)
                 .collect(Collectors.toList());
     }
@@ -255,7 +255,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id ="+ eventId+ "not found"));
         if (!event.getState().equals(State.PUBLISHED)) {
-            throw new NotFoundException("Event with id=" + eventId +" is not published");
+            throw new NotFoundException("Event with id=" + eventId + " is not published");
         }
 
         saveEndpointHit(request);
@@ -283,36 +283,36 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto UserUpdateEvent(Long userId, Long eventId, UpdateEventUserRequest eventDto) {
+    public EventFullDto userUpdateEvent(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest) {
 
-        Event eventTarget = eventRepository.findByIdAndInitiatorId(eventId, UserMapper.toUser(
+        Event event = eventRepository.findByIdAndInitiatorId(eventId, UserMapper.toUser(
                 userService.getUserById(userId)
                 ))
                 .orElseThrow(() -> new NotFoundException(
                        "Event not found with id =" + eventId + " and userId =" + userId));
-        Event eventUpdate = EventMapper.toEventUpdateByUser(eventDto);
+        Event eventUpdate = EventMapper.toEventUpdateByUser(updateEventUserRequest);
 
-        if (eventDto.getCategory() != null) {
+        if (updateEventUserRequest.getCategory() != null) {
             eventUpdate.setCategory(
-                    CategoryMapper.toCategory(categoryService.getCategoryById(eventDto.getCategory())));
+                    CategoryMapper.toCategory(categoryService.getCategoryById(updateEventUserRequest.getCategory())));
         }
-            if (eventTarget.getState().equals(State.PUBLISHED)) {
+            if (event.getState().equals(State.PUBLISHED)) {
                 throw new ConflictException("Event must not be published");
             }
-        if (eventDto.getStateAction() != null) {
-            if (UserStateAction.CANCEL_REVIEW.toString().equals(eventDto.getStateAction().toString())) {
-                eventTarget.setState(State.CANCELED);
+        if (updateEventUserRequest.getStateAction() != null) {
+            if (UserStateAction.CANCEL_REVIEW.toString().equals(updateEventUserRequest.getStateAction().toString())) {
+                event.setState(State.CANCELED);
 
-            } else if (UserStateAction.SEND_TO_REVIEW.toString().equals(eventDto.getStateAction().toString())) {
-                eventTarget.setState(State.PENDING);
+            } else if (UserStateAction.SEND_TO_REVIEW.toString().equals(updateEventUserRequest.getStateAction().toString())) {
+                event.setState(State.PENDING);
             }
         }
 
         checkEventDate(eventUpdate.getEventDate());
-        eventRepository.save(eventTarget);
+        eventRepository.save(event);
 
-        log.info("Update event: {}", eventTarget.getTitle());
-        return EventMapper.toEventFullDto(eventTarget);
+        log.info("Event was updated by ID/State -> {}/{}", event.getId(), event.getState());
+        return EventMapper.toEventFullDto(event);
     }
 
     @Override
@@ -345,7 +345,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepository.findByIdAndInitiatorId(
                 eventId, UserMapper.toUser(userService.getUserById(userId)))
                 .orElseThrow(() -> new NotFoundException(
-                        "Event not found with id ="+ eventId +" and userId =" + userId));
+                        "Event not found with id =" + eventId + " and userId =" + userId));
 
         Long participantLimit = event.getParticipantLimit();
         Long approvedRequests = event.getRequest();
@@ -365,7 +365,7 @@ public class EventServiceImpl implements EventService {
                                 r.setStatus(CONFIRMED);
                             } else {
                                 throw new ConflictException(
-                                     "Request with id=" + r.getId() +" has already been confirmed");
+                                     "Request with id=" + r.getId() + " has already been confirmed");
                             }
                         })
                         .map(RequestMapper::toParticipationRequestDto)
@@ -402,6 +402,7 @@ public class EventServiceImpl implements EventService {
         }
         eventRepository.save(event);
         requestRepository.flush();
+        log.info("Status and Requests of event was updated");
         return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
     }
 

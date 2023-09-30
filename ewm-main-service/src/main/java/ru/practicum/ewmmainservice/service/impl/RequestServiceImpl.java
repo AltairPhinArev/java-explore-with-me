@@ -74,14 +74,14 @@ public class RequestServiceImpl implements RequestService {
          UserDto user = userService.getUserById(userId);
 
         if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
-            throw new ConflictException
-                    ("Request with requesterId=" + userId + " and eventId=" + eventId + " already exist");
+            throw new ConflictException("Request with requesterId=" + userId + " and eventId=" +
+                    eventId + " already exist");
         }
         if (userId.equals(event.getInitiatorId().getId())) {
             throw new ConflictException("User with id=" + userId + " must not be equal to initiator");
         }
         if (!event.getState().equals(State.PUBLISHED)) {
-            throw new ConflictException("Event with id="+ eventId +" is not published");
+            throw new ConflictException("Event with id=" + eventId + " is not published");
         }
         if (event.getParticipantLimit().equals(event.getRequest()) && event.getParticipantLimit() != 0) {
             throw new ConflictException(String.format("Event with id=%d has reached participant limit", eventId));
@@ -112,8 +112,8 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public ParticipationRequestDto updateRequest(Long userId, Long requestId) {
         Request request = requestRepository.findByIdAndRequesterId(requestId, userId)
-                .orElseThrow(() -> new NotFoundException("Request with id="+ userId +
-                        "and requesterId="+ requestId +" was not found"));
+                .orElseThrow(() -> new NotFoundException("Request with id=" + userId +
+                        "and requesterId=" + requestId + " was not found"));
 
         request.setStatus(Status.CANCELED);
         ParticipationRequestDto participationRequestDto =
