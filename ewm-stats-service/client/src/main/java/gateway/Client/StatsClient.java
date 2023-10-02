@@ -1,6 +1,7 @@
 package gateway.Client;
 
 import dto.EndpointHitDto;
+import gateway.Client.BaseClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

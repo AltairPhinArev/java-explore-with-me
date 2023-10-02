@@ -2,12 +2,14 @@ package gateway.Client;
 
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class BaseClient {
 
     RestTemplate rest;
