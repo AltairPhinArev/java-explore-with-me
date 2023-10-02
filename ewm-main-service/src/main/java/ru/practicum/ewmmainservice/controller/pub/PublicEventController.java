@@ -9,6 +9,8 @@ import ru.practicum.ewmmainservice.dto.event.EventShortDto;
 import ru.practicum.ewmmainservice.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -31,8 +33,8 @@ public class PublicEventController {
                                             @RequestParam(required = false) String rangeEnd,
                                             @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                             @RequestParam(defaultValue = "EVENT_DATE") SortByState sortByState,
-                                            @RequestParam(defaultValue = "0") Integer from,
-                                            @RequestParam(defaultValue = "10") Integer size,
+                                            @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                            @RequestParam(defaultValue = "10") @Positive Integer size,
                                             HttpServletRequest request) {
 
         log.info("PUBLIC GET request to get all events by params");

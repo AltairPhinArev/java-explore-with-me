@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewmmainservice.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.service.CategoryService;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -21,8 +23,8 @@ public class PublicCategoriesController {
     }
 
     @GetMapping
-    public List<CategoryDto> getAll(@RequestParam (defaultValue = "0") Integer from,
-                                    @RequestParam (defaultValue = "10") Integer size) {
+    public List<CategoryDto> getAll(@RequestParam (defaultValue = "0") @PositiveOrZero Integer from,
+                                    @RequestParam (defaultValue = "10") @Positive Integer size) {
         log.info("PUBLIC GET request to get all Categories by page parameters from/size= {}/{}", from, size);
         return categoryService.getAll(from, size);
     }

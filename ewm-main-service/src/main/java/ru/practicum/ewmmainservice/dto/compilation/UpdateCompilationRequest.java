@@ -1,9 +1,9 @@
 package ru.practicum.ewmmainservice.dto.compilation;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Getter
@@ -17,7 +17,6 @@ public class UpdateCompilationRequest {
 
     private Boolean pinned;
 
-    @NotBlank
-    @Size(max = 50)
+    @Length(min = 1, max = 50)
     private String title;
 }

@@ -41,10 +41,6 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto createCompilation(NewCompilationDto newCompilationDto) {
         log.info("POST/Admin");
-        if (newCompilationDto.getTitle() == null || newCompilationDto.getTitle().isBlank() ||
-        newCompilationDto.getTitle().length() > 50 || newCompilationDto.getTitle().isEmpty()) {
-            throw new ValidationException("");
-        }
 
         if (newCompilationDto.getPinned() == null) {
             newCompilationDto.setPinned(false);
@@ -67,34 +63,22 @@ public class CompilationServiceImpl implements CompilationService {
         log.info("PATCH/Admin");
 
         Compilation compilation = compilationRepository.findById(compId).orElseThrow(() ->
-                new NotFoundException(String.format("Compilation with id = %d not found", compId)));
+                new NotFoundException("Compilation with id=" + compId + " not found"));
 
-        Set<Event> events = null;
-
-        if (updateCompilationRequest.getEvents() != null) {
-            events = findEvents(updateCompilationRequest.getEvents());
-        }
         if (updateCompilationRequest.getTitle() != null) {
             compilation.setTitle(updateCompilationRequest.getTitle());
         }
         if (updateCompilationRequest.getEvents() != null) {
-            compilation.setEvents(events);
+            compilation.setEvents( findEvents(updateCompilationRequest.getEvents()));
         }
         if (updateCompilationRequest.getPinned() != null) {
             compilation.setPinned(updateCompilationRequest.getPinned());
         }
-
-        if (compilation.getTitle().length() > 50 || compilation.getTitle().isEmpty()) {
-            throw new ValidationException("");
-        }
-
-        compilation.setId(compId);
-
+        
         Compilation newCompilation = compilationRepository.save(compilation);
         log.info("Compilation with id = {} was successfully updated", compId);
         return CompilationMapper.toCompilationDto(newCompilation);
     }
-
 
     @Override
     public void deleteCompilation(Long compId) {

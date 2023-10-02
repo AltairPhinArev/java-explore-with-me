@@ -1,7 +1,7 @@
 package ru.practicum.ewmmainservice.service.impl;
 
 import dto.EndpointHitDto;
-import gateway.Client.StatsClient;
+import gateway.Client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,10 +201,10 @@ public class EventServiceImpl implements EventService {
             throw new ValidationException("End of range cant be before start");
         }
 
-        if (sortByState != null && sortByState.toString().equals("EVENT_DATE")) {
+        if (sortByState != null && sortByState.equals(SortByState.EVENT_DATE)) {
             events = eventRepository.findPublicSortByEventDate(text, categories, paid, startDate,
                     endDate, PageRequest.of(from, size));
-        } else if (sortByState != null && sortByState.toString().equals("VIEWS")) {
+        } else if (sortByState != null && sortByState.equals(SortByState.VIEWS)) {
             events = eventRepository.findPublicSortByViews(text, categories, paid, startDate,
                     endDate, PageRequest.of(from, size));
         }
@@ -317,11 +317,10 @@ public class EventServiceImpl implements EventService {
 
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
 
-        List<Long> requestIds = new ArrayList<>(new HashSet<>(updateRequest.getRequestIds())); // Remove duplicate IDs
+        List<Long> requestIds = new ArrayList<>(new HashSet<>(updateRequest.getRequestIds()));
+        List<Request> requestsToUpdate = requestRepository.findAllByIdIn(requestIds);
 
-        for (Long requestId : requestIds) {
-            Request request = requestRepository.findById(requestId).orElseThrow(() -> new NotFoundException("Request not found"));
-
+        for (Request request : requestsToUpdate) {
             if (event.getParticipants().size() >= event.getParticipantLimit()) {
                 throw new ConflictException("Event participant limit reached");
             }
@@ -331,8 +330,9 @@ public class EventServiceImpl implements EventService {
             }
 
             request.setStatus(Status.valueOf(updateRequest.getStatus()));
-            requestRepository.save(request);
         }
+
+        requestRepository.saveAll(requestsToUpdate);
 
         List<Request> requests = requestRepository.findAllByEventId(eventId);
 

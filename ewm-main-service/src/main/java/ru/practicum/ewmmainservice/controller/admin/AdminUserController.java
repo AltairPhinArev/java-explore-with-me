@@ -9,6 +9,8 @@ import ru.practicum.ewmmainservice.dto.user.UserDto;
 import ru.practicum.ewmmainservice.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -25,8 +27,8 @@ public class AdminUserController {
 
     @GetMapping
     public List<UserDto> getUsers(@RequestParam(defaultValue = "") List<Long> ids,
-                                  @RequestParam(defaultValue = "0") Integer from,
-                                  @RequestParam(defaultValue = "10") Integer size) {
+                                  @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                  @RequestParam(defaultValue = "10") @Positive Integer size) {
         log.info("Admin GET request to get all users by List of ids= {}, or all by page from/size = {}/{}",
                 ids,from,size);
         return userService.getAll(ids, from, size);

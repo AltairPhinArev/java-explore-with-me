@@ -11,6 +11,8 @@ import ru.practicum.ewmmainservice.service.EventService;
 import ru.practicum.ewmmainservice.service.RequestService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Set;
 
@@ -33,8 +35,8 @@ public class PrivateEventController {
 
     @GetMapping("/events")
     public Set<EventShortDto> getAll(@PathVariable Long userId,
-                                     @RequestParam(defaultValue = "0") Integer from,
-                                     @RequestParam(defaultValue = "10") Integer size) {
+                                     @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                     @RequestParam(defaultValue = "10") @Positive Integer size) {
         log.info("Private GET request from User = {} to get All events", userId);
         return eventService.getAll(userId, from, size);
     }

@@ -38,49 +38,49 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto createCategory(NewCategoryDto newCategoryDto) {
+        CategoryDto categoryDto;
+
         try {
-            if (newCategoryDto.getName() == null || newCategoryDto.getName().isEmpty()
-                    || newCategoryDto.getName().isBlank()) {
-                throw new ValidationException("Incorrectly made request.");
-            } else {
-                return CategoryMapper.toCategoryDto(
-                        categoriesRepository
-                                .save(CategoryMapper.toCategoryCreate(newCategoryDto)));
-            }
+            categoryDto = CategoryMapper.toCategoryDto(
+                    categoriesRepository
+                            .save(CategoryMapper.toCategoryCreate(newCategoryDto)));
+
         } catch (DataIntegrityViolationException e) {
             throw new ConflictException(e.getMessage(), e);
         }
+
+        log.info("Category was created");
+        return categoryDto;
     }
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDtoToUpd, Long catId) {
-
+        CategoryDto category;
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(categoriesRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException("Category with ID + " + catId + " doesn't exist")));
 
-        if (categoryDtoToUpd.getId() == null) {
-            categoryDtoToUpd.setId(categoryDto.getId());
-        }
-
-        if (categoryDtoToUpd.getName() == null) {
-            categoryDtoToUpd.setName(categoryDto.getName());
-        }
-        CategoryDto category;
+        categoryDto.setName(categoryDtoToUpd.getName());
 
         try {
-            category   = CategoryMapper.toCategoryDto(categoriesRepository.save(CategoryMapper.toCategory(categoryDtoToUpd)));
+            category = CategoryMapper.toCategoryDto(categoriesRepository.save(CategoryMapper.toCategory(categoryDto)));
         } catch (DataIntegrityViolationException e) {
             throw new ConflictException(e.getMessage(), e);
         }
+        log.info("Category was updated by ID= {}", catId);
         return category;
     }
 
     @Override
     public void deleteCategory(Long catId) {
-        if (eventService.getByCategoryId(catId).isEmpty() && checkCategory(catId)) {
-                    categoriesRepository.deleteById(catId);
+        if (checkCategory(catId)) {
+            if (eventService.getByCategoryId(catId).isEmpty() && checkCategory(catId)) {
+                categoriesRepository.deleteById(catId);
+                log.info("Category by ID= {} deleted", catId);
+            } else {
+                throw new ConflictException("The category is not empty");
+            }
         } else {
-            throw new ConflictException("dsd");
+            throw new NotFoundException("Category with id=" + catId + " was not found");
         }
     }
 
