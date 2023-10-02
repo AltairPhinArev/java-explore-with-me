@@ -12,7 +12,6 @@ import ru.practicum.ewmmainservice.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.dto.category.NewCategoryDto;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.ConflictException;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.errorhandling.exceptions.ValidationException;
 import ru.practicum.ewmmainservice.mapper.CategoryMapper;
 import ru.practicum.ewmmainservice.repository.CategoriesRepository;
 import ru.practicum.ewmmainservice.service.CategoryService;

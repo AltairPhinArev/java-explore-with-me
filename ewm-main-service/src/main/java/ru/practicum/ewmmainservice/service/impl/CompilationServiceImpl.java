@@ -12,7 +12,6 @@ import ru.practicum.ewmmainservice.dto.compilation.NewCompilationDto;
 import ru.practicum.ewmmainservice.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.ConflictException;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.NotFoundException;
-import ru.practicum.ewmmainservice.errorhandling.exceptions.ValidationException;
 import ru.practicum.ewmmainservice.mapper.CompilationMapper;
 import ru.practicum.ewmmainservice.model.Compilation;
 import ru.practicum.ewmmainservice.model.Event;
@@ -69,14 +68,13 @@ public class CompilationServiceImpl implements CompilationService {
             compilation.setTitle(updateCompilationRequest.getTitle());
         }
         if (updateCompilationRequest.getEvents() != null) {
-            compilation.setEvents( findEvents(updateCompilationRequest.getEvents()));
+            compilation.setEvents(findEvents(updateCompilationRequest.getEvents()));
         }
         if (updateCompilationRequest.getPinned() != null) {
             compilation.setPinned(updateCompilationRequest.getPinned());
         }
-        
         Compilation newCompilation = compilationRepository.save(compilation);
-        log.info("Compilation with id = {} was successfully updated", compId);
+        log.info("Compilation with id ={} was successfully updated", compId);
         return CompilationMapper.toCompilationDto(newCompilation);
     }
 
