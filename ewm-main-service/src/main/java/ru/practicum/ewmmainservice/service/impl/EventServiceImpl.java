@@ -19,15 +19,13 @@ import ru.practicum.ewmmainservice.errorhandling.exceptions.ConflictException;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.NotFoundException;
 
 import ru.practicum.ewmmainservice.errorhandling.exceptions.ValidationException;
-import ru.practicum.ewmmainservice.mapper.CategoryMapper;
-import ru.practicum.ewmmainservice.mapper.EventMapper;
-import ru.practicum.ewmmainservice.mapper.RequestMapper;
-import ru.practicum.ewmmainservice.mapper.UserMapper;
+import ru.practicum.ewmmainservice.mapper.*;
 import ru.practicum.ewmmainservice.model.Event;
 import ru.practicum.ewmmainservice.model.Request;
 import ru.practicum.ewmmainservice.repository.EventRepository;
 import ru.practicum.ewmmainservice.repository.RequestRepository;
 import ru.practicum.ewmmainservice.service.CategoryService;
+import ru.practicum.ewmmainservice.service.CommentService;
 import ru.practicum.ewmmainservice.service.EventService;
 import ru.practicum.ewmmainservice.service.UserService;
 
@@ -53,6 +51,8 @@ public class EventServiceImpl implements EventService {
 
     RequestRepository requestRepository;
 
+    CommentService commentService;
+
     UserService userService;
 
     StatsClient statsClient;
@@ -60,11 +60,12 @@ public class EventServiceImpl implements EventService {
     @Lazy
     @Autowired
     public EventServiceImpl(EventRepository eventRepository, CategoryService categoryService,
-                            RequestRepository requestRepository, UserService userService,
-                            StatsClient statsClient) {
+                            RequestRepository requestRepository, CommentService commentService,
+                            UserService userService, StatsClient statsClient) {
         this.eventRepository = eventRepository;
         this.categoryService = categoryService;
         this.requestRepository = requestRepository;
+        this.commentService = commentService;
         this.userService = userService;
         this.statsClient = statsClient;
     }
@@ -256,8 +257,16 @@ public class EventServiceImpl implements EventService {
 
         saveEndpointHit(request);
         event.setViews((long) uniqView.size());
+        EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
+
+        if (commentService.checkCommentByEventId(eventId)) {
+            eventFullDto.setComments(commentService.getCommentToEvent(eventId).stream()
+                    .map(CommentMapper::toCommentShortDto)
+                    .collect(Collectors.toList()));
+        }
+
         log.info("Public get Event by Id= {}", eventId);
-        return EventMapper.toEventFullDto(event);
+        return eventFullDto;
     }
 
     @Override
@@ -272,10 +281,18 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto get(Long userId, Long eventId) {
-        return EventMapper.toEventFullDto(eventRepository.findByIdAndInitiatorId(eventId,
+        EventFullDto eventFullDto = EventMapper.toEventFullDto(eventRepository.findByIdAndInitiatorId(eventId,
                         UserMapper.toUser(userService.getUserById(userId)))
                 .orElseThrow(() -> new NotFoundException(
                        "Event not found with id = " + eventId + " and userId =" + userId)));
+
+        if (commentService.checkCommentByEventId(eventId)) {
+            eventFullDto.setComments(commentService.getCommentToEvent(eventId).stream()
+                    .map(CommentMapper::toCommentShortDto)
+                    .collect(Collectors.toList()));
+        }
+
+        return eventFullDto;
     }
 
     @Override

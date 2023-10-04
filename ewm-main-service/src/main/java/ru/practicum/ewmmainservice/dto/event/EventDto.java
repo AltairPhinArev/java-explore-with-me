@@ -1,12 +1,14 @@
 package ru.practicum.ewmmainservice.dto.event;
 
 import lombok.*;
+import ru.practicum.ewmmainservice.dto.comment.CommentDto;
 import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.model.Location;
 import ru.practicum.ewmmainservice.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.dto.user.UserDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -46,4 +48,6 @@ public class EventDto {
     private String title;
 
     private Long views;
+
+    private List<CommentDto> comments;
 }
