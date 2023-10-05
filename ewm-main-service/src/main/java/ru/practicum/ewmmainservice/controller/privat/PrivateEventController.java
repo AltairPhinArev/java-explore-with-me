@@ -16,6 +16,7 @@ import ru.practicum.ewmmainservice.service.RequestService;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -75,6 +76,15 @@ public class PrivateEventController {
                                              @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                              @RequestParam(defaultValue = "10") @Positive Integer size) {
         return commentService.searchUserCommentsByText(userId,text, from, size);
+    }
+
+    @GetMapping("/events/comments")
+    public List<CommentDto> getCommentByParams(@PathVariable Long userId,
+                                             @RequestParam(required = false) LocalDateTime startTime,
+                                             @RequestParam(required = false) LocalDateTime endTime,
+                                             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                             @RequestParam(defaultValue = "10") @Positive Integer size) {
+        return commentService.getOwnCommentsByParams(userId, startTime, endTime, from, size);
     }
 
     @PatchMapping("/events/comments/{commentId}")

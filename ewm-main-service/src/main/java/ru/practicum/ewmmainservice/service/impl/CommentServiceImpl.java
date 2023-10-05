@@ -11,6 +11,7 @@ import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.dto.event.EventDto;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.ConflictException;
 import ru.practicum.ewmmainservice.errorhandling.exceptions.NotFoundException;
+import ru.practicum.ewmmainservice.errorhandling.exceptions.ValidationException;
 import ru.practicum.ewmmainservice.mapper.CommentMapper;
 import ru.practicum.ewmmainservice.mapper.EventMapper;
 import ru.practicum.ewmmainservice.mapper.UserMapper;
@@ -97,8 +98,8 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto updateCommentByUser(Long userId, Long commentId,
                                     CommentDtoToCreateAndUpdate commentDtoToCreateAndUpdate) {
 
-        CommentDto commentDto = CommentMapper.toCommentDto(commentRepository.findById(commentId).
-                orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + "was not found")));
+        CommentDto commentDto = CommentMapper.toCommentDto(commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + "was not found")));
 
         if (Objects.equals(commentDto.getUser().getId(), userId)) {
             commentDto.setDescription(commentDtoToCreateAndUpdate.getDescription());
@@ -116,7 +117,8 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDto> getOwnComments(Long userId, Integer from, Integer size) {
         PageRequest pageRequest = PageRequest.of(from, size, Sort.by("id"));
         if (userService.checkUser(userId)) {
-            return commentRepository.findAllByUserId(UserMapper.toUser(userService.getUserById(userId)), pageRequest).stream()
+            return commentRepository.findAllByUserId(UserMapper.toUser(userService.getUserById(userId)), pageRequest)
+                    .stream()
                     .map(CommentMapper::toCommentDto)
                     .collect(Collectors.toList());
         } else {
@@ -130,8 +132,14 @@ public class CommentServiceImpl implements CommentService {
         userService.checkUser(userId);
         PageRequest pageRequest = PageRequest.of(from, size);
 
+
         if (startDate != null || endDate != null) {
-            return commentRepository.findCommentByOwnerByStartDateAndEndDate(userId, startDate, endDate, pageRequest).stream()
+            if (endDate.isAfter(startDate)) {
+                throw new ValidationException("StartDate must be earlier EndDate");
+            }
+
+            return commentRepository.findCommentByOwnerByStartDateAndEndDate(userId, startDate, endDate, pageRequest)
+                    .stream()
                     .map(CommentMapper::toCommentDto)
                     .collect(Collectors.toList());
         } else {
@@ -143,8 +151,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getOwnCommentById(Long userId, Long commentId) {
-        CommentDto commentDto = CommentMapper.toCommentDto(commentRepository.findById(commentId).
-                orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + "was not found")));
+        CommentDto commentDto = CommentMapper.toCommentDto(commentRepository.findById(commentId)
+                        .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + "was not found")));
 
         if (Objects.equals(commentDto.getUser().getId(), userId)) {
             return commentDto;
@@ -219,8 +227,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteCommentByUser(Long userId, Long commentId) {
-        Comment comment = commentRepository.findById(commentId).
-                orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + "was not found"));
+        Comment comment = commentRepository.findById(commentId)
+                        .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + "was not found"));
         if (Objects.equals(comment.getUserId().getId(), userId)) {
             commentRepository.deleteById(commentId);
         } else {

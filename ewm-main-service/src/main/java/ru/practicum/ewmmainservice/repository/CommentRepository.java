@@ -22,6 +22,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> searchCommentsByUserId_IdAndDescriptionContainsIgnoreCase(Long userId, String text,
                                                                                PageRequest pageRequest);
+
     boolean existsByEventId_Id(Long eventId);
 
     @Query("SELECT c FROM Comment AS c " +

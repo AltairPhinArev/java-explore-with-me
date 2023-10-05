@@ -1,6 +1,5 @@
 package ru.practicum.ewmmainservice.dto.comment;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewmmainservice.dto.user.UserShortDto;
 
