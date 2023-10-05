@@ -163,8 +163,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getCommentByIdForAdmin(Long commentId) {
-        return CommentMapper.toCommentDto(commentRepository.findById(commentId).
-                orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + " was not found")));
+        return CommentMapper.toCommentDto(commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + " was not found")));
     }
 
     @Override
@@ -187,8 +187,8 @@ public class CommentServiceImpl implements CommentService {
         userService.checkUser(userId);
 
         if (text == null || text.isBlank()) {
-            return commentRepository.findAllByUserId(UserMapper.toUser
-                    (userService.getUserById(userId)), pageRequest).stream()
+            return commentRepository.findAllByUserId(UserMapper.toUser(
+                    userService.getUserById(userId)), pageRequest).stream()
                     .map(CommentMapper::toCommentDto)
                     .collect(Collectors.toList());
         } else {

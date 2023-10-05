@@ -2,7 +2,6 @@ package ru.practicum.ewmmainservice.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import ru.practicum.ewmmainservice.dto.comment.CommentDto;
 import ru.practicum.ewmmainservice.dto.comment.CommentShortDto;
 import ru.practicum.ewmmainservice.model.Location;
 import ru.practicum.ewmmainservice.dto.enums.State;
