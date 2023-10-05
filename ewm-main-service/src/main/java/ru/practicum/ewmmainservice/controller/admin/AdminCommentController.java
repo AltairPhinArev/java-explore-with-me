@@ -27,6 +27,7 @@ public class AdminCommentController {
     public List<CommentDto> getCommentsByPageParamsByText(@RequestParam String text,
                                                     @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                                     @RequestParam(defaultValue = "10") @Positive Integer size) {
+        log.info("Admin GET request to get all comments by text");
         return commentService.searchCommentsByText(text,from,size);
     }
 
@@ -34,6 +35,7 @@ public class AdminCommentController {
     public List<CommentDto> getCommentsByPageParamsAndEventId(@PathVariable Long eventId,
                                                           @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                                           @RequestParam(defaultValue = "10") @Positive Integer size) {
+        log.info("Admin GET request to get all comments by event");
         return commentService.getCommentByEvent(eventId,from,size);
     }
 
@@ -46,6 +48,7 @@ public class AdminCommentController {
 
     @DeleteMapping("/{commentId}")
     public void deleteCommentById(@PathVariable Long commentId) {
+        log.info("Admin DELETE request to remove comments by commentId");
         commentService.deleteCommentByAdmin(commentId);
     }
 }

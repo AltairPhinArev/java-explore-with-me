@@ -67,7 +67,7 @@ public class PrivateEventController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentDto createNewComment(@PathVariable Long userId, @PathVariable Long eventId,
                                        @RequestBody @Valid CommentDtoToCreateAndUpdate commentDtoToCreateAndUpdate) {
-        log.info("POST request to create new Comment");
+        log.info("Private POST request to create new Comment");
         return commentService.creteComment(userId, eventId, commentDtoToCreateAndUpdate);
     }
 
@@ -76,7 +76,7 @@ public class PrivateEventController {
                                              @RequestParam(required = false) String text,
                                              @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                              @RequestParam(defaultValue = "10") @Positive Integer size) {
-        log.info("GET request to get comment by text");
+        log.info("Private GET request to get comment by text");
         return commentService.searchUserCommentsByText(userId,text, from, size);
     }
 
@@ -86,20 +86,20 @@ public class PrivateEventController {
                                              @RequestParam(required = false) LocalDateTime endTime,
                                              @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                              @RequestParam(defaultValue = "10") @Positive Integer size) {
-        log.info("GET request to get Own comment by Date Params");
+        log.info("Private GET request to get Own comment by Date Params");
         return commentService.getOwnCommentsByParams(userId, startTime, endTime, from, size);
     }
 
     @PatchMapping("/events/comments/{commentId}")
     public CommentDto updateComment(@PathVariable Long userId, @PathVariable Long commentId,
                                     @RequestBody @Valid CommentDtoToCreateAndUpdate commentDtoToCreateAndUpdate) {
-        log.info("PATCH request to update Own comment by ID");
+        log.info("Private PATCH request to update Own comment by ID");
         return commentService.updateCommentByUser(userId, commentId, commentDtoToCreateAndUpdate);
     }
 
     @GetMapping("/events/comments/{commentId}")
     public CommentDto getCommentByIdFromUser(@PathVariable Long userId, @PathVariable Long commentId) {
-        log.info("GET request to get Own comment by ID");
+        log.info("Private GET request to get Own comment by ID");
         return commentService.getOwnCommentById(userId, commentId);
     }
 
@@ -107,14 +107,14 @@ public class PrivateEventController {
     public List<CommentDto> getCommentByIdFromUser(@PathVariable Long userId,
                                                    @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                                    @RequestParam(defaultValue = "10") @Positive Integer size) {
-        log.info("GET request to get all own comment");
+        log.info("Private request to get all own comment");
         return commentService.getOwnComments(userId, from, size);
     }
 
 
     @DeleteMapping("/events/comments/{commentId}")
     public void deleteOwnComment(@PathVariable Long userId, @PathVariable Long commentId) {
-        log.info("DELETE request to comment by id");
+        log.info("Private DELETE request to comment by id");
         commentService.deleteCommentByUser(userId, commentId);
     }
 
@@ -157,5 +157,4 @@ public class PrivateEventController {
         log.info("Private PATCH request from User = {} to update Request by ID= {}", userId, requestsId);
         return requestService.updateRequest(userId, requestsId);
     }
-
 }
