@@ -78,7 +78,7 @@ public class PrivateEventController {
         return commentService.searchUserCommentsByText(userId,text, from, size);
     }
 
-    @GetMapping("/events/comments")
+    @GetMapping("/comments")
     public List<CommentDto> getCommentByParams(@PathVariable Long userId,
                                              @RequestParam(required = false) LocalDateTime startTime,
                                              @RequestParam(required = false) LocalDateTime endTime,
