@@ -2,12 +2,14 @@ package ru.practicum.ewmmainservice.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import ru.practicum.ewmmainservice.dto.comment.CommentShortDto;
 import ru.practicum.ewmmainservice.model.Location;
 import ru.practicum.ewmmainservice.dto.enums.State;
 import ru.practicum.ewmmainservice.dto.category.CategoryDto;
 import ru.practicum.ewmmainservice.dto.user.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,4 +50,6 @@ public class EventFullDto {
     private Location location;
 
     private Boolean requestModeration;
+
+    private List<CommentShortDto> comments;
 }

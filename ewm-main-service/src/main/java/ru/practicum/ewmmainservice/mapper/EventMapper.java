@@ -128,4 +128,18 @@ public class EventMapper {
                 .views(entity.getViews())
                 .build();
     }
+
+    public static EventShortDto toEventShortDto(EventDto eventDto) {
+        return EventShortDto.builder()
+                .id(eventDto.getId())
+                .annotation(eventDto.getAnnotation())
+                .category(eventDto.getCategory())
+                .confirmedRequests(eventDto.getRequest())
+                .eventDate(eventDto.getEventDate())
+                .initiator(UserMapper.toUserShortDto(eventDto.getInitiatorId()))
+                .paid(eventDto.getPaid())
+                .title(eventDto.getTitle())
+                .views(eventDto.getViews())
+                .build();
+    }
 }
